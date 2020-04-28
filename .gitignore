@@ -1,6 +1,8 @@
 node_modules/
 aws-lambda-image.zip
+aws-lambda-image-dev.zip
 aws-lambda-image-layer.zip
+aws-lambda-image-dev-layer.zip
 build/
 config.json
 npm-debug.log

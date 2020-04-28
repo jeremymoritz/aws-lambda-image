@@ -66,4 +66,4 @@ RUN mkdir -p /opt/share/fonts/default && \
 
 RUN cd /opt && \
   find . ! -perm -o=r -exec chmod +400 {} \; && \
-  zip -yr /tmp/aws-lambda-image-layer.zip ./*
+  zip -yr /tmp/aws-lambda-image-dev-layer.zip ./*

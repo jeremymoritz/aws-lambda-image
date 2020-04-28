@@ -1,7 +1,7 @@
 #!/bin/bash
 
-docker build -t aws-lambda-image-layer .
-docker run --rm aws-lambda-image-layer cat /tmp/aws-lambda-image-layer.zip > ./aws-lambda-image-layer.zip
+docker build -t aws-lambda-image-dev-layer .
+docker run --rm aws-lambda-image-dev-layer cat /tmp/aws-lambda-image-dev-layer.zip > ./aws-lambda-image-dev-layer.zip
 
 REGIONS='
 ap-northeast-1
@@ -27,22 +27,22 @@ for region in $REGIONS; do
     echo "deploying layer image to ${region}"
     version=$(aws lambda publish-layer-version \
         --region $region \
-        --layer-name aws-lambda-image-layer \
-        --zip-file fileb://aws-lambda-image-layer.zip \
-        --description "bundled binaries layer for aws-lambda-image" \
+        --layer-name aws-lambda-image-dev-layer \
+        --zip-file fileb://aws-lambda-image-dev-layer.zip \
+        --description "bundled binaries layer for aws-lambda-image-dev" \
         --query Version \
         --output text)
     [ $? -eq 0 ] || exit 1
     echo "version is ${version}"
     aws lambda add-layer-version-permission \
         --region $region \
-        --layer-name aws-lambda-image-layer \
-        --statement-id aws-lambda-image-layer-sid \
+        --layer-name aws-lambda-image-dev-layer \
+        --statement-id aws-lambda-image-dev-layer-sid \
         --action lambda:GetLayerVersion \
         --principal '*' \
         --version-number ${version}
     [ $? -eq 0 ] || exit 1
-    LAYER_JSON+=("  \"${region}\": \"arn:aws:lambda:${region}:251217462751:layer:aws-lambda-image-layer:${version}\"")
+    LAYER_JSON+=("  \"${region}\": \"arn:aws:lambda:${region}:251217462751:layer:aws-lambda-image-dev-layer:${version}\"")
 done
 
 OUT="{"

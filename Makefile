@@ -12,17 +12,17 @@ lambda:
 	@cp -R bin build/
 	@rm -rf build/bin/darwin
 	@echo "Create package archive..."
-	@cd build && zip -rq aws-lambda-image.zip .
-	@mv build/aws-lambda-image.zip ./
+	@cd build && zip -rq aws-lambda-image-dev.zip .
+	@mv build/aws-lambda-image-dev.zip ./
 
 uploadlambda: lambda
 	@if [ -z "${LAMBDA_FUNCTION_NAME}" ]; then (echo "Please export LAMBDA_FUNCTION_NAME" && exit 1); fi
-	aws lambda update-function-code --function-name ${LAMBDA_FUNCTION_NAME} --zip-file fileb://aws-lambda-image.zip
+	aws lambda update-function-code --function-name ${LAMBDA_FUNCTION_NAME} --zip-file fileb://aws-lambda-image-dev.zip
 
 configtest:
 	@./bin/configtest
 
 clean:
 	@echo "clean up package files"
-	@if [ -f aws-lambda-image.zip ]; then rm aws-lambda-image.zip; fi
+	@if [ -f aws-lambda-image-dev.zip ]; then rm aws-lambda-image-dev.zip; fi
 	@rm -rf build/*
